@@ -67,6 +67,10 @@ MyWindow::MyWindow(){
       al_destroy_timer(gameclock);
 
      }
+     
+      al_register_event_source(que, al_get_display_event_source(Screen));
+      al_register_event_source(que,al_get_timer_event_source(gameclock));
+      al_register_event_source(que,al_get_keyboard_event_source());
 
 }
 
@@ -85,9 +89,7 @@ al_destroy_event_queue(que);
 
 void MyWindow::GameLoop(){
 
- al_register_event_source(que, al_get_display_event_source(Screen));
- al_register_event_source(que,al_get_timer_event_source(gameclock));
- al_register_event_source(que,al_get_keyboard_event_source());
+
  
  al_clear_to_color(al_map_rgb(0,0,0));
  al_set_window_position(Screen, 1600,200);
