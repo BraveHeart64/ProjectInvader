@@ -29,6 +29,41 @@ Sprite::~Sprite() {
 
 
 
+     void Sprite::SetPosX(int x){
+         posx = x;
+     }
+     
+     void Sprite::SetPosY(int y){
+         posy=y;
+     }
+     
+     int Sprite::MoveLeft(){
+       return  posx=posx-2;
+     }
+     
+     int Sprite::MoveRight(){
+        return posx=posx+2;
+     }
+     
+     int Sprite::GetPosX(){
+     
+         return posx;
+     }
+     
+     int Sprite::GetPosY(){
+     
+         return posy;
+     }
+
+
+
+
+
+
+
+
+
+
 
 void Sprite::LoadShipType( char ShipType[2]){
  
@@ -67,3 +102,5 @@ ALLEGRO_BITMAP* Sprite:: GetShip(){
     return ship;
     
 }
+
+

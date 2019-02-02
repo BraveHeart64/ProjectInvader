@@ -20,6 +20,7 @@ class Sprite : public GameSprite {
     
     private:  
     ALLEGRO_BITMAP*  ship = 0;
+    int posx, posy;
     int height, width;
     float speedx,  speedy;
     char shiptype[1];
@@ -28,6 +29,13 @@ public:
     
      int  CreateShip(ALLEGRO_BITMAP* Image,int height, int width, float speedx, float speedy);
      void UpdateSprite(ALLEGRO_BITMAP* Image,int height, int width, float speedx, float speedy );
+     void SetPosX(int x);
+     void SetPosY(int y);
+     int GetPosX();
+     int GetPosY();
+     int MoveLeft();
+     int MoveRight();
+     
      void SpriteCollision(ALLEGRO_BITMAP& image,ALLEGRO_BITMAP& imagetwo);
      void LoadShipType( char Ship[1]);
      ALLEGRO_BITMAP* GetShip();  

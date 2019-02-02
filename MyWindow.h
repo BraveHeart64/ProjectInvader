@@ -45,7 +45,7 @@ public:
     void GameClock();
     void WindowEvent();
     void GameLoop();
-    void DrawScreen();
+    void DrawScreen(Sprite &one, Sprite &two);
 
 
    MyWindow();

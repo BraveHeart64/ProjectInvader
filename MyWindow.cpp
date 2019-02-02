@@ -95,24 +95,45 @@ void MyWindow::GameLoop(){
  al_set_window_position(Screen, 1600,200);
  al_set_window_title(Screen,"Invaders");
  
- Sprite playerone,aiplayer;
- 
+  Sprite playerone,aiplayer;
+  playerone.SetPosX(100);
+  playerone.SetPosY(470);
+  aiplayer.SetPosX(200);//200 4
+  aiplayer.SetPosY(4);
   playerone.LoadShipType(player);
   aiplayer.LoadShipType(enemy);
-  
+   ALLEGRO_KEYBOARD_STATE key;
  
-  DrawScreen();
- al_flip_display();
+ al_draw_bitmap(playerone.GetShip(),playerone.GetPosX(),playerone.GetPosY(),0);
+ al_draw_bitmap(aiplayer.GetShip(),aiplayer.GetPosX(),aiplayer.GetPosY(),0);
+
  al_start_timer(gameclock);
- 
- al_draw_bitmap(playerone.GetShip(),100,470,0);
- al_draw_bitmap(aiplayer.GetShip(),200,4,0);
- 
+ DrawScreen(playerone,aiplayer);
+
   while(gamestate != 10){
    al_wait_for_event(que,&event);
+  
+   
+   
      if(event.type == ALLEGRO_EVENT_TIMER){
+         al_get_keyboard_state(&key);
+         if(al_key_down(&key,ALLEGRO_KEY_RIGHT)&& playerone.GetPosX() <= 430){
+             
+             playerone.MoveRight();
+            
+         }else{
+             
+         }
+         
+          if(al_key_down(&key,ALLEGRO_KEY_LEFT)&& playerone.GetPosX() >= 0){
+             playerone.MoveLeft();
+         }
+          else{
+              
+          }
        clearscreen = true;
-      }
+       
+     }
        else if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE){
         gamestate = 10;
        }
@@ -120,21 +141,30 @@ void MyWindow::GameLoop(){
        // Main Game events in this code
        if(clearscreen && al_is_event_queue_empty(que)){
           clearscreen = false;
-          //al_clear_to_color(al_map_rgb(0,0,0));
+         // al_clear_to_color(al_map_rgb(0,0,0));
          
           
+           DrawScreen(playerone, aiplayer);
          
-         
-          al_flip_display();
+       
        }
+   
   }
 
 }
 
 
-
-void MyWindow::DrawScreen(){
-  
-
+/*
+int MyWindow::keyboardEvents(int key){
+    int up=5,down=2,left=1,right=3;
+    
+    
+}
+*/
+void MyWindow::DrawScreen(Sprite &playerone,Sprite &aiplayer){
+    al_clear_to_color(al_map_rgb(0,0,0));
+     al_draw_bitmap(playerone.GetShip(),playerone.GetPosX(),playerone.GetPosY(),0);
+     al_draw_bitmap(aiplayer.GetShip(),aiplayer.GetPosX(),aiplayer.GetPosY(),0);
+   al_flip_display();
 
 }
