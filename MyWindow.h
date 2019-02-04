@@ -31,7 +31,7 @@ class MyWindow {
 
     bool clearscreen;
     int gamestate;
-
+Sprite playerone,aiplayer[10]; 
 
 
 
@@ -41,12 +41,12 @@ class MyWindow {
 
 
 public:
-
+  
     void GameClock();
     void WindowEvent();
     void GameLoop();
-    void DrawScreen(Sprite &one, Sprite &two);
-
+    void DrawScreen(Sprite &one, Sprite two[], int slot);
+    void UpdateScreen();
 
    MyWindow();
   ~MyWindow();

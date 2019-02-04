@@ -20,8 +20,12 @@ class Sprite : public GameSprite {
     
     private:  
     ALLEGRO_BITMAP*  ship = 0;
+    ALLEGRO_BITMAP* shot[3];
     int posx, posy;
+    int shotx, shoty;
     int height, width;
+    bool firing;
+    bool recharge;
     float speedx,  speedy;
     char shiptype[1];
     
@@ -31,8 +35,16 @@ public:
      void UpdateSprite(ALLEGRO_BITMAP* Image,int height, int width, float speedx, float speedy );
      void SetPosX(int x);
      void SetPosY(int y);
+     void ShipShot();
+     bool ShotFired();
+     bool Recharge();
+     ALLEGRO_BITMAP* LoadShotToScreen();
      int GetPosX();
      int GetPosY();
+     
+     int GetShotx();
+     int GetShoty();
+     
      int MoveLeft();
      int MoveRight();
      
