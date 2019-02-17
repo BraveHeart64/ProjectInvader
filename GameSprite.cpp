@@ -28,12 +28,3 @@ GameSprite::~GameSprite() {
 }
 
 
-int GameSprite::CreateShip(ALLEGRO_BITMAP* Image,int height, int width, float speedx, float speedy) {
-    
-    
-}
-
-void GameSprite:: UpdateSprite(ALLEGRO_BITMAP* Image,int height, int width, float speedx, float speedy ) {
-    
-    
-}

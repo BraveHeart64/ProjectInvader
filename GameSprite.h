@@ -23,9 +23,7 @@ public:
     GameSprite();
     GameSprite(const GameSprite& orig);
     virtual ~GameSprite();
-    virtual int  CreateShip(ALLEGRO_BITMAP* Image,int height, int width, float speedx, float speedy);
-    virtual void UpdateSprite(ALLEGRO_BITMAP* Image,int height, int width, float speedx, float speedy );
-    virtual void SpriteCollision(ALLEGRO_BITMAP& image,ALLEGRO_BITMAP& imagetwo) = 0;
+ 
     
 private:
     float speedx, speedy;

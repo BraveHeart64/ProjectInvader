@@ -16,21 +16,20 @@
 
 #include<allegro5/allegro5.h>
 #include<allegro5/allegro_image.h>
+#include"GameEngine.h"
 #include"Sprite.h"
 
 class MyWindow {
 
  private:
     ALLEGRO_DISPLAY * Screen;
-    ALLEGRO_EVENT_QUEUE *que;
-    ALLEGRO_EVENT event;
-    ALLEGRO_TIMER * gameclock;
     ALLEGRO_BITMAP* Icon = 0;
+	GameEngine engine;
      char player[2]={'P','L'};
      char enemy[2]={'E','N'};
-
-    bool clearscreen;
-    int gamestate;
+     bool clearscreen;
+	 bool error = false;
+     int gamestate;
 Sprite playerone,aiplayer[10]; 
 
 
@@ -41,7 +40,7 @@ Sprite playerone,aiplayer[10];
 
 
 public:
-  
+	bool Error();
     void GameClock();
     void WindowEvent();
     void GameLoop();

@@ -12,153 +12,144 @@
  */
 
 #include"MyWindow.h"
-#include<iostream>
-//#include"GameSprite.h"
+#include<allegro5\allegro_native_dialog.h>
+
 using namespace std;
 
 MyWindow::MyWindow(){
    al_init();
    al_init_image_addon();
    al_install_keyboard();
-
-    Screen = 0;
-    que = 0;
-    gameclock = 0;
-    
-    const float FramesPerSecond = 60;
-    clearscreen = true;
-    gamestate = 0;
-    Icon = al_load_bitmap("Graphics/gameicon.png");
-
+   const float FramesPerSecond = 60;
+   clearscreen = true;
+   gamestate = 0;
+   playerone.SetPosX(100);
+   playerone.SetPosY(470);
+   aiplayer[0].SetPosX(200);//200 4
+   aiplayer[0].SetPosY(4);
+   aiplayer[1].SetPosX(20);//200 4
+   aiplayer[1].SetPosY(4);
+   playerone.LoadShipType(player);
+   aiplayer[0].LoadShipType(enemy);
+   aiplayer[1].LoadShipType(enemy);
+   Icon = al_load_bitmap("Graphics/gameicon.png");
+   Screen = 0;
 
 
 
 
    if(!al_init()){
-      cout<<"Allegro failed to init";
+	  al_show_native_message_box(0, "AL_INIT_ERROR", "AL_init!", "!al_init() was not initiaited!", 0, 0);
 
     }
-       Screen = al_create_display(500,500);
+     Screen = al_create_display(500,500);
        
      if(Screen == 0){
-       cout<<"failed to create the screen";
-
+    
+	   al_show_native_message_box(0,"ScreenError","ScreenError","Screen was not loaded",0,0);
+	   gamestate = 10;
+	   Error();
     }
+	 else {
+      al_register_event_source(engine.ReturnTheQue(), al_get_display_event_source(Screen));
+	  al_register_event_source(engine.ReturnTheQue(), al_get_timer_event_source(engine.ReturnGameClockTicks()));
+      al_register_event_source(engine.ReturnTheQue(), al_get_keyboard_event_source());
+	 }
        
     if(Icon == 0){
-     cout<<"Icon is not loaded";
+     
+	 al_show_native_message_box(0, 0, 0, "Could not load the Icon", 0, 0);
+	 al_show_native_message_box(0, "Icon is missiong", "Icon was not found in file", "Icon is gone!", 0, 0);
     gamestate = 10;
+	Error();
     }
-    else{
+    if(error ==false){
          al_set_display_icon(Screen,Icon); 
      
     }
 
-       
-      gameclock = al_create_timer(1.0/FramesPerSecond);
-     if(!gameclock){
-      cout<<"failed to create the timer";
-     }
 
-     que = al_create_event_queue();
-     if(!que){
-      cout<<"failed to create the que event";
-      al_destroy_display(Screen);
-      al_destroy_timer(gameclock);
+      
+     
 
-     }
-     
-      al_register_event_source(que, al_get_display_event_source(Screen));
-      al_register_event_source(que,al_get_timer_event_source(gameclock));
-      al_register_event_source(que,al_get_keyboard_event_source());
-     
-  playerone.SetPosX(100);
-  playerone.SetPosY(470);
-  aiplayer[0].SetPosX(200);//200 4
-  aiplayer[0].SetPosY(4);
-  aiplayer[1].SetPosX(20);//200 4
-  aiplayer[1].SetPosY(4);
-   playerone.LoadShipType(player);
-  aiplayer[0].LoadShipType(enemy);
-   aiplayer[1].LoadShipType(enemy);
 }
 
 
 
-
+bool MyWindow::Error() {
+	error = true;
+	return error;
+}
 
 
 MyWindow::~MyWindow(){
-al_destroy_timer(gameclock);
 al_destroy_display(Screen);
-al_destroy_event_queue(que);
-
 };
 
 
 void MyWindow::GameLoop(){
 
 
- 
- al_clear_to_color(al_map_rgb(0,0,0));
- al_set_window_position(Screen, 1600,200);
- al_set_window_title(Screen,"Invaders");
- 
- 
-  
-  
-  
+	if (error == false) {
+		al_clear_to_color(al_map_rgb(0, 0, 0));
+		al_set_window_position(Screen, 600, 200);
+		al_set_window_title(Screen, "Invaders");
 
-   ALLEGRO_KEYBOARD_STATE key;
- 
- //al_draw_bitmap(playerone.GetShip(),playerone.GetPosX(),playerone.GetPosY(),0);
- //al_draw_bitmap(aiplayer.GetShip(),aiplayer.GetPosX(),aiplayer.GetPosY(),0);
 
- al_start_timer(gameclock);
- //DrawScreen(playerone,aiplayer);
 
-  while(gamestate != 10){
-   al_wait_for_event(que,&event);
-  
-   
-   
-     if(event.type == ALLEGRO_EVENT_TIMER){
-         al_get_keyboard_state(&key);
-         if(al_key_down(&key,ALLEGRO_KEY_RIGHT)&& playerone.GetPosX() <= 430){
-             
-             playerone.MoveRight();
-            
-         }
-         
-          if(al_key_down(&key,ALLEGRO_KEY_LEFT)&& playerone.GetPosX() >= 0){
-             playerone.MoveLeft();
-         }
-         
-         if(al_key_down(&key,ALLEGRO_KEY_ENTER)){
-             
-              playerone.ShipShot();
-               playerone.Recharge();
-             
-         } 
-         
-       clearscreen = true;
-       
-     }
-       else if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE){
-        gamestate = 10;
-       }
 
-       // Main Game events in this code
-       if(clearscreen && al_is_event_queue_empty(que)){
-          clearscreen = false;
-         // al_clear_to_color(al_map_rgb(0,0,0));
-         
-          
-           DrawScreen(playerone, aiplayer, 0);
-           UpdateScreen();
-       }
-   
-  }
+
+
+		ALLEGRO_KEYBOARD_STATE key;
+		al_start_timer(engine.ReturnGameClockTicks());
+
+
+		while (gamestate != 10) {
+			al_wait_for_event(engine.ReturnTheQue(), &engine.RefOfEvent());
+
+
+
+			if (engine.ReturnEvent().type == ALLEGRO_EVENT_TIMER) {
+				al_get_keyboard_state(&key);
+				if (al_key_down(&key, ALLEGRO_KEY_RIGHT) && playerone.GetPosX() <= 430) {
+
+					playerone.MoveRight();
+
+				}
+
+				if (al_key_down(&key, ALLEGRO_KEY_LEFT) && playerone.GetPosX() >= 0) {
+					playerone.MoveLeft();
+				}
+
+				if (al_key_down(&key, ALLEGRO_KEY_SPACE)) {
+
+					playerone.ShipShot();
+					playerone.Recharge();
+
+				}
+
+				clearscreen = true;
+
+			}
+			else if (engine.ReturnEvent().type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
+				gamestate = 10;
+			}
+
+			// Main Game events in this code
+			if (clearscreen && al_is_event_queue_empty(engine.ReturnTheQue())) {
+				clearscreen = false;
+				// al_clear_to_color(al_map_rgb(0,0,0));
+
+				engine.PaintSptirts(playerone, aiplayer, 0);
+				engine.HitDection(playerone, aiplayer[0]);
+				engine.HitDection(playerone, aiplayer[1]);
+				UpdateScreen();
+			}
+
+
+
+		}
+	}
 
 }
 
@@ -170,22 +161,9 @@ int MyWindow::keyboardEvents(int key){
     
 }
 */
-void MyWindow::DrawScreen(Sprite &playerone,Sprite aiplayer[],int slot){
-     slot = 0;
-     al_clear_to_color(al_map_rgb(0,0,0));
-     al_draw_bitmap(playerone.GetShip(),playerone.GetPosX(),playerone.GetPosY(),0);
-     al_draw_bitmap(aiplayer[slot].GetShip(),aiplayer[slot].GetPosX(),aiplayer[slot].GetPosY(),0);
-     slot++;
-     al_draw_bitmap(aiplayer[slot].GetShip(),aiplayer[slot].GetPosX(),aiplayer[slot].GetPosY(),0);
-    
-    if(playerone.ShotFired() == true){
-        al_draw_bitmap(playerone.LoadShotToScreen(),playerone.GetShotx(),playerone.GetShoty(),0);
-        
-                }
-  
-   
 
-}
+
+
 
 
 

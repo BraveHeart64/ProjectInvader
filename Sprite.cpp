@@ -14,7 +14,7 @@
 #include "Sprite.h"
 
 Sprite::Sprite() {
-     height= width=0;;
+     height= width=0;
      speedx=speedy=0.0;
     recharge = true;
     
@@ -95,7 +95,7 @@ Sprite::~Sprite() {
      
      
      bool Sprite::Recharge(){
-         recharge = false;
+       return  recharge = false;
      }
      
      
@@ -159,30 +159,9 @@ void Sprite::LoadShipType( char ShipType[2]){
 
 
 
-int Sprite::CreateShip(ALLEGRO_BITMAP* Image,int height, int width, float speedx, float speedy){
-   
-     return speedx; 
-   }
-   
 
 
-void Sprite::UpdateSprite(ALLEGRO_BITMAP* Image,int height, int width, float speedx, float speedy ){
-     
-     
-     
-     }
-   
-
-
-void Sprite::SpriteCollision(ALLEGRO_BITMAP& image,ALLEGRO_BITMAP& imagetwo){
-     
-     
-     }
-    
-
-
-
-ALLEGRO_BITMAP* Sprite:: GetShip(){
+ALLEGRO_BITMAP* Sprite:: GetSprite(){
     
     return ship;
     
